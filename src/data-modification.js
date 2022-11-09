@@ -62,3 +62,49 @@ console.dir(changeOwner(tree, 'anders'), { depth: null });
 //   meta: { owner: 'anders' },
 //   type: 'directory'
 // }
+
+// Lowercase filenames at all nesting levels
+const tree2 = mkdir('/', [
+  mkdir('eTc', [
+    mkdir('NgiNx'),
+    mkdir('CONSUL', [
+      mkfile('config.json'),
+    ]),
+  ]),
+  mkfile('hOsts'),
+]);
+
+const downcaseNames = (fileTree) => {
+  const name = getName(fileTree);
+  const newMeta = _.cloneDeep(getMeta(fileTree));
+  if (isFile(fileTree)) {
+    return mkfile(name.toLowerCase(), newMeta);
+  }
+  const children = getChildren(fileTree);
+  const newChildren = children.map(downcaseNames);
+  return mkdir(name, newChildren, newMeta);
+};
+
+console.dir(downcaseNames(tree2), { depth: null });
+// {
+//   name: '/',
+//     children: [
+//   {
+//     name: 'eTc',
+//     children: [
+//       { name: 'NgiNx', children: [], meta: {}, type: 'directory' },
+//       {
+//         name: 'CONSUL',
+//         children: [ { name: 'config.json', meta: {}, type: 'file' } ],
+//         meta: {},
+//         type: 'directory'
+//       }
+//     ],
+//     meta: {},
+//     type: 'directory'
+//   },
+//   { name: 'hosts', meta: {}, type: 'file' }
+// ],
+//   meta: {},
+//   type: 'directory'
+// }
