@@ -1,0 +1,34 @@
+{
+  "name": "trees",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "working with tree data structures",
+  "simple-git-hooks": {
+    "pre-commit": "make lint"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anders2004/trees.git"
+  },
+  "author": "anders",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anders2004/trees/issues"
+  },
+  "homepage": "https://github.com/anders2004/trees#readme",
+  "devDependencies": {
+    "eslint": "^8.27.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "simple-git-hooks": "^2.8.1"
+  },
+  "dependencies": {
+    "@hexlet/immutable-fs-trees": "^0.7.1",
+    "@types/node": "^18.11.9",
+    "lodash": "^4.17.21"
+  }
+}
