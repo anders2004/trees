@@ -115,3 +115,20 @@ const compressImages = (imgTree) => {
 };
 
 console.dir(compressImages(fileTree), { depth: null });
+// {
+//   name: 'home',
+//     children: [
+//   { name: 'avatar.jpg', meta: { size: 50 }, type: 'file' },
+//   { name: 'passport.jpg', meta: { size: 100 }, type: 'file' },
+//   { name: 'family.jpg', meta: { size: 75 }, type: 'file' },
+//   { name: 'addresses', meta: { size: 62.5 }, type: 'file' },
+//   {
+//     name: 'presentations',
+//     children: [],
+//     meta: {},
+//     type: 'directory'
+//   }
+// ],
+//   meta: {},
+//   type: 'directory'
+// }
