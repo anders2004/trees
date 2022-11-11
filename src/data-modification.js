@@ -10,6 +10,7 @@ import {
  *
  */
 
+// Change the owner of all directories and files
 const tree = mkdir('/', [
   mkdir('etc', [
     mkfile('bashrc'),
