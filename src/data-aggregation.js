@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {
-  mkfile, mkdir, getChildren, getName, isFile,
+  mkfile, mkdir, getChildren, getName, isFile, isDirectory,
 } from '@hexlet/immutable-fs-trees';
 
 /**
@@ -59,3 +59,38 @@ const getHiddenFilesCount = (node) => {
   return _.sum(hiddenFilesCount);
 };
 console.log(getHiddenFilesCount(tree2)); // 3
+
+// The function returns a list directories of the first level of nesting
+// and the number of files inside each of them, including all subdirectories
+const tree3 = mkdir('/', [
+  mkdir('etc', [
+    mkdir('apache'),
+    mkdir('nginx', [
+      mkfile('nginx.conf'),
+    ]),
+  ]),
+  mkdir('consul', [
+    mkfile('config.json'),
+    mkfile('file.tmp'),
+    mkdir('data'),
+  ]),
+  mkfile('hosts'),
+  mkfile('resolve'),
+]);
+
+const getFilesCount = (node) => {
+  if (isFile(node)) return 1;
+  const children = getChildren(node);
+  const descendantCount = children.map(getFilesCount);
+  return _.sum(descendantCount);
+};
+
+const getSubdirectoriesInfo = (node) => {
+  const children = getChildren(node);
+  const result = children
+    .filter(isDirectory)
+    .map((child) => [getName(child), getFilesCount(child)]);
+  return result;
+};
+
+console.log(getSubdirectoriesInfo(tree3)); // [ [ 'etc', 1 ], [ 'consul', 2 ] ]
