@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {
-  mkfile, mkdir, getChildren, getName, isFile, isDirectory,
+  mkfile, mkdir, getChildren, getName, isFile, isDirectory, getMeta,
 } from '@hexlet/immutable-fs-trees';
 
 /**
@@ -94,3 +94,41 @@ const getSubdirectoriesInfo = (node) => {
 };
 
 console.log(getSubdirectoriesInfo(tree3)); // [ [ 'etc', 1 ], [ 'consul', 2 ] ]
+
+// The function returns a list directories of the first level of nesting
+// and the total size of files inside each of them, including all subdirectories
+// The result is sorted by size in reverse order
+const tree4 = mkdir('/', [
+  mkdir('etc', [
+    mkdir('apache'),
+    mkdir('nginx', [
+      mkfile('nginx.conf', { size: 800 }),
+    ]),
+    mkdir('consul', [
+      mkfile('config.json', { size: 1200 }),
+      mkfile('data', { size: 8200 }),
+      mkfile('raft', { size: 80 }),
+    ]),
+  ]),
+  mkfile('hosts', { size: 3500 }),
+  mkfile('resolve', { size: 1000 }),
+]);
+
+const calculateFileSizes = (node) => {
+  if (isFile(node)) {
+    const meta = getMeta(node);
+    return meta.size;
+  }
+  const children = getChildren(node);
+  const sizes = children.map(calculateFileSizes);
+  return _.sum(sizes);
+};
+
+const getDirectorySizes = (node) => {
+  const children = getChildren(node);
+  const result = children.map((child) => [getName(child), calculateFileSizes(child)]);
+  result.sort(([, size1], [, size2]) => size2 - size1);
+  return result;
+};
+
+console.log(getDirectorySizes(tree4)); // [['etc', 10280], ['hosts', 3500], ['resolve', 1000]]
